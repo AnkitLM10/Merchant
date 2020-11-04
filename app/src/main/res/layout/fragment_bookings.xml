@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ccc"
+    android:padding="2dp">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/merchantBookingNavbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#000"
+        android:fitsSystemWindows="false"
+        app:itemTextColor="#fff"
+        app:menu="@menu/merchant_booking_menu" />
+
+    <FrameLayout
+        android:id="@+id/merchantBookingNavbarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/merchantBookingNavbar" />
+
+</RelativeLayout>

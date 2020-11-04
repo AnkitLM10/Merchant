@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="#E8E8E8"
+
+    >
+
+
+    <TextView
+        android:id="@+id/childServiceTitle"
+        android:layout_width="wrap_content"
+        android:paddingLeft="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/parentCategoryAddPortfolioCheckbox"
+        android:layout_alignBaseline="@id/parentCategoryAddPortfolioCheckbox"
+        android:text="Category"
+        android:textColor="#000"
+        android:textSize="15sp"
+        />
+
+    <CheckBox
+        android:id="@+id/parentCategoryAddPortfolioCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:textColor="#000"
+        android:focusableInTouchMode="false"
+        android:layoutDirection="rtl"
+        android:text="ADD +"
+        android:textSize="15sp"
+        />
+
+
+</RelativeLayout>

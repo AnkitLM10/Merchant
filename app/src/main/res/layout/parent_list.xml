@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ccc"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:weightSum="10">
+
+    <TextView
+        android:id="@+id/parentCategoryPortfolioTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:paddingLeft="40dp"
+        android:text="Category"
+        android:textColor="#000"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/parentCategorySizePortfolio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:background="#ccc"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:text="Items"
+        android:gravity="right"
+        android:textSize="20sp"
+        />
+
+</LinearLayout>

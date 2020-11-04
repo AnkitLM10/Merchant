@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawerBalance"
+            android:title="Balance" />
+
+        <item
+            android:id="@+id/drawerViewPortfolio"
+            android:title="View Portfolio" />
+        <item
+            android:id="@+id/drawerEditUpdatePortfolio"
+            android:title="Edit/Update Portfolio" />
+
+        <item
+            android:id="@+id/drawerAddNewOffer"
+            android:title="Add New Offer" />
+
+
+        <item
+            android:id="@+id/drawerCustomerFeedback"
+            android:title="Customer Feedback" />
+
+        <item
+            android:id="@+id/drawerPromote"
+            android:title="Promote" />
+
+        <item
+            android:id="@+id/drawerAcceptPayment"
+            android:title="Accept Payment" />
+
+
+        <item
+            android:id="@+id/drawerInvite"
+            android:title="Invite" />
+
+
+        <item
+            android:id="@+id/drawerSettings"
+            android:title="Settings" />
+
+
+        <item
+            android:id="@+id/drawerContactUs"
+            android:title="Contact Us" />
+
+    </group>
+</menu>

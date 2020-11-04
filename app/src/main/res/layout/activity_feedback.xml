@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".menu.FeedbackActivity">
+
+    <TextView
+        android:id="@+id/feedbackSalonTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#323232"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:text="REVIEW : SALON"
+        android:textColor="#FFF" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/feedbackAverageRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#323232"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:text="Avergae Rating:"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/feedbackNumberOfReviews"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#323232"
+            android:gravity="right"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:text="Number of Reviews"
+            android:textColor="#FFF" />
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <ListView
+        android:id="@+id/feedbackListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

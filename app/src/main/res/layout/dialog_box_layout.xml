@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Booking Action!"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        >
+
+        <Button
+            android:id="@+id/cancelBooking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="cancel"
+            android:textColor="#FF0000" />
+
+        <Button
+            android:id="@+id/approveBooking"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+
+            android:layout_height="wrap_content"
+            android:text="approve"
+            android:textColor="#FF0000" />
+
+        <Button
+            android:id="@+id/denyBooking"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+
+            android:layout_height="wrap_content"
+            android:text="deny"
+            android:textColor="#FF0000" />
+
+        <Button
+            android:id="@+id/completedBooking"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+
+            android:layout_height="wrap_content"
+            android:text="completed"
+            android:textColor="#FF0000" />
+    </LinearLayout>
+
+    </LinearLayout>
