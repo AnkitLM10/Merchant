@@ -109,7 +109,7 @@ public class SignUpStep1 extends AppCompatActivity {
                 intent.putExtra("Token", response.body().token);
                 intent.putExtra("Email", signUpStep1Email.getText().toString().trim());
                 intent.putExtra("Name", signUpStep1NameOfKainchi.getText().toString().trim());
-                intent.putExtra("Phone", signUpStep1Phone.getText().toString().trim());
+                intent.putExtra("Phone","+91"+ signUpStep1Phone.getText().toString().trim());
                 intent.putExtra("Password", signUpStep1Password.getText().toString().trim());
                 startActivity(intent);
 

@@ -74,6 +74,11 @@ public class SignUpStep3 extends AppCompatActivity {
         signUpStep3Continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (signUpStep3Continue.getText().equals("Please Select Your Location!")) {
+                    Toast.makeText(SignUpStep3.this, "Please Select Your Location First!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (latitude == -9999 || longitude == 9999) {
                     Toast.makeText(SignUpStep3.this, "Please Select the Location", Toast.LENGTH_SHORT).show();
                     return;
@@ -189,6 +194,7 @@ public class SignUpStep3 extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             longitude = location.getLongitude();
             latitude = location.getLatitude();
+            signUpStep3Continue.setText("Continue");
             Log.d("tag", longitude + " " + latitude);
             System.out.println(latitude + " " + longitude + ";;");
         }
@@ -204,9 +210,10 @@ public class SignUpStep3 extends AppCompatActivity {
                 System.out.println(place.getLatLng().latitude + "laa");
                 latitude = place.getLatLng().latitude;
                 longitude = place.getLatLng().longitude;
+                signUpStep3Continue.setText("Continue");
                 System.out.println(latitude + " " + longitude + ";;");
 
-            } else if (data == null && System.currentTimeMillis() - systemTimeWhenPickerActivityStarted <= 2500) {
+            } else if (data == null && System.currentTimeMillis() - systemTimeWhenPickerActivityStarted <= 4000) {
                 Intent intent = null;
                 try {
                     intent = new PlacePicker.IntentBuilder()// Initial Latitude and Longitude the Map will load into// Show Coordinates in the Activity
