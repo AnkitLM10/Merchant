@@ -42,7 +42,7 @@ public class Api_endPoint {
 
 
         @GET("portfolio")
-        Call<ServiceOffered> getServicesOffered(@Query("merchantId") String categoryId, @HeaderMap Map<String, String> headers);
+        Call<ServiceOffered> getServicesOffered(@HeaderMap Map<String, String> headers);
 
 
         @GET("services/all")

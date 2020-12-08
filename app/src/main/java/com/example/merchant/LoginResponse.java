@@ -1,4 +1,3 @@
-
 package com.example.merchant;
 
 import com.google.gson.annotations.Expose;

@@ -1,7 +1,9 @@
 package com.example.merchant;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +11,28 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class bookingPastFragment extends Fragment {
 
 
     Context context;
+    ListView listView;
+    CustomListView customListView;
+    List<Booking> pastBooking;
 
     @Nullable
     @Override
@@ -28,17 +40,73 @@ public class bookingPastFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_booking_past, container, false);
 //        TextView textView = (TextView) view.findViewById(R.id.pastBookingTextView);
 //        textView.setText(MerchantHome.pastBooking.size() + "");
-
+        pastBooking = new ArrayList<>();
         context = container.getContext();
-
-
-        ListView listView = (ListView) view.findViewById(R.id.listViewPastBooking);
-
-        CustomListView customListView = new CustomListView(MerchantHome.pastBooking.size(), context, MerchantHome.pastBooking);
-        listView.setAdapter(customListView);
+        collectingPastBooking(view);
 
         return view;
     }
+
+
+    private void collectingPastBooking(final View view) {
+
+
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Loading");
+        dialog.setMessage("Fetching Merchant Booking Details...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        System.out.println("inside booking merchant " + MerchantHome.token);
+        Map<String, String> headers = new HashMap<>();
+        Log.d("header from Details", MerchantHome.token);
+        headers.put("token", MerchantHome.token);
+        Call<BookingResponse> loginResponse = Api_booking.getService().getAllBooking(headers);
+        loginResponse.enqueue(new Callback<BookingResponse>() {
+            @Override
+            public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+                Log.d("tag", call.toString());
+                if (!response.isSuccessful()) {
+                    Log.d("tag", response.toString());
+                    Toast.makeText(getContext(), "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+                dialog.dismiss();
+                Log.d("tag", response.toString());
+                Log.d("tagSize", response.body().bookings.size() + "");
+
+                for (int i = 0; i < response.body().bookings.size(); i++) {
+
+                    if (response.body().bookings.get(i).status.equals("expired") || response.body().bookings.get(i).status.equals("completed") || response.body().bookings.get(i).status.equals("denied"))
+                        pastBooking.add(response.body().bookings.get(i));
+                }
+
+                listView = (ListView) view.findViewById(R.id.listViewPastBooking);
+
+                customListView = new CustomListView(pastBooking.size(), context, pastBooking);
+                listView.setAdapter(customListView);
+
+
+            }
+
+
+            @Override
+            public void onFailure(Call<BookingResponse> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getContext(), "Problem Fetching Merchant Booking Details", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                System.out.println(t.getCause().getMessage());
+                System.out.println("fail......... " + call.request().url() + "");
+                System.out.println("fail......... " + call.toString() + "pending");
+
+            }
+        });
+
+
+    }
+
 
     class CustomListView extends BaseAdapter {
         int size = 0;
@@ -95,7 +163,7 @@ public class bookingPastFragment extends Fragment {
             String dateString = android.text.format.DateFormat.format("hh:mm aa dd MMMM", bookingList.get(i).date).toString();
             holder.bookingDate.setText(dateString);
 //            holder.bookingDate.setText(bookingList.get(i).date.toString());
-            holder.bookingAmount.setText(getResources().getString(R.string.rupee) +" "+ bookingList.get(i).payableAmount);
+            holder.bookingAmount.setText(getResources().getString(R.string.rupee) + " " + bookingList.get(i).payableAmount);
 
 //
 //            holder.service.setText(dataList.get(i).service);

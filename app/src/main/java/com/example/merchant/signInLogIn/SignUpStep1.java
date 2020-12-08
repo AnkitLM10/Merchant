@@ -118,8 +118,8 @@ public class SignUpStep1 extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VerifyUniqueDetailCallback> call, Throwable t) {
-                Toast.makeText(SignUpStep1.this, "failure", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(SignUpStep1.this, "failure"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(t.getMessage());
 
             }
         });

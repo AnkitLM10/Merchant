@@ -28,31 +28,23 @@
 
 
         <Button
-            android:id="@+id/approveBooking"
+            android:id="@+id/completeBooking"
             android:layout_width="wrap_content"
             android:textSize="12sp"
-
             android:layout_height="wrap_content"
-            android:text="Accept"
+            android:text="Complete"
             android:textColor="#FF0000" />
 
-        <Button
-            android:id="@+id/denyBooking"
-            android:layout_width="wrap_content"
-            android:textSize="12sp"
 
-            android:layout_height="wrap_content"
-            android:text="deny"
-            android:textColor="#FF0000" />
 
-<!--        <Button-->
-<!--            android:id="@+id/completedBooking"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:textSize="12sp"-->
+        <!--        <Button-->
+        <!--            android:id="@+id/completedBooking"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:textSize="12sp"-->
 
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="completed"-->
-<!--            android:textColor="#FF0000" />-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="completed"-->
+        <!--            android:textColor="#FF0000" />-->
     </LinearLayout>
 
-    </LinearLayout>
+</LinearLayout>

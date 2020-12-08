@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class bookingFragment extends Fragment {
+public class bookingFragment extends Fragment implements MerchantHome.MyInterface{
 
 
     BottomNavigationView bottomNavigationView;
@@ -21,7 +21,6 @@ public class bookingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,5 +51,16 @@ public class bookingFragment extends Fragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         getFragmentManager().beginTransaction().replace(R.id.merchantBookingNavbarContainer, new bookingNewFragment()).commit();
         return view;
+    }
+
+    public void update() {
+        getFragmentManager().beginTransaction().replace(R.id.merchantBookingNavbarContainer, new bookingNewFragment()).commit();
+
+    }
+
+
+    @Override
+    public void myAction() {
+        getFragmentManager().beginTransaction().replace(R.id.merchantBookingNavbarContainer, new bookingNewFragment()).commit();
     }
 }

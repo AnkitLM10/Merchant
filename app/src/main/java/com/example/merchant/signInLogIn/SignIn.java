@@ -2,6 +2,7 @@ package com.example.merchant.signInLogIn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 public class SignIn extends AppCompatActivity {
 
     EditText signInPassword, signInEmail;
-    TextView signInCreateNewAccount, signInButton;
+    TextView signInCreateNewAccount, signInButton, forgetPasswordTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,26 @@ public class SignIn extends AppCompatActivity {
         signInPassword = (EditText) findViewById(R.id.signInPassword);
         signInEmail = (EditText) findViewById(R.id.signInEmail);
         signInCreateNewAccount = (TextView) findViewById(R.id.signInCreateNewAccount);
+        forgetPasswordTextView = (TextView) findViewById(R.id.forgetPasswordTextView);
         signInButton = (TextView) findViewById(R.id.signInButton);
         setOnCliclListenerForSignInButton();
         setOnCliclListenerForCreateNewAccount();
+        setOnClickListenerForForgetPassword();
+
+
+    }
+
+    private void setOnClickListenerForForgetPassword() {
+        forgetPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                startActivity(new Intent(SignIn.this, Forget_Password.class));
+
+
+            }
+        });
 
 
     }
@@ -71,6 +89,13 @@ public class SignIn extends AppCompatActivity {
                 }
 
 
+                final ProgressDialog dialog = new ProgressDialog(SignIn.this);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setTitle("Loading");
+                dialog.setMessage("Loading. Please wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCanceledOnTouchOutside(false);
+
                 LoginUser loginUser = new LoginUser(emailText, password, "abcd");
                 Call<LoginResponse> loginResponse = Api_call.getService().getLoginResponse(loginUser);
                 loginResponse.enqueue(new Callback<LoginResponse>() {
@@ -79,6 +104,8 @@ public class SignIn extends AppCompatActivity {
 
                         if (!response.isSuccessful()) {
                             Log.d("tag", response.toString());
+                            Toast.makeText(SignIn.this, "Problem while Signing In", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
                             return;
                         }
 
@@ -87,6 +114,7 @@ public class SignIn extends AppCompatActivity {
                         Log.d("tag", response.headers().toString());
                         Intent intent = new Intent(SignIn.this, MerchantHome.class);
                         intent.putExtra("Token", response.headers().get("Token"));
+                        dialog.dismiss();
                         intent.putExtra("Email", emailText);
                         startActivity(intent);
 
@@ -96,7 +124,7 @@ public class SignIn extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
                         Toast.makeText(SignIn.this, "failure", Toast.LENGTH_SHORT).show();
-
+                        dialog.dismiss();
 
                     }
                 });

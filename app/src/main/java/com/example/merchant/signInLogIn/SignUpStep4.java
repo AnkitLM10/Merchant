@@ -8,20 +8,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchant.Api_ImageKit;
+import com.example.merchant.Api_Upload;
 import com.example.merchant.Api_call_merchant;
 import com.example.merchant.LoginActivity;
 import com.example.merchant.LoginResponse;
 import com.example.merchant.Merchant;
 import com.example.merchant.MerchantDetail;
+import com.example.merchant.MerchantHome;
 import com.example.merchant.R;
+import com.example.merchant.pojo.ImageKitResponse;
+import com.example.merchant.pojo.Signature;
+import com.example.merchant.pojo.imageKitPost;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +52,7 @@ public class SignUpStep4 extends AppCompatActivity {
     String token, email, phone, password, longitude, latitude, name;
     TextView signUpstep4ClickFromCamera, signUpstep4SelectFromGallery, signUpstep4Finish;
     private int SELECT_PICTURE = 1;
+    private int SELECT_PICTURE_GALLERY = 1;
     private StorageReference mStorageRef;
     int imageCountDialog = 0, currentImageCount = 0;
     List<String> listImages;
@@ -67,8 +77,26 @@ public class SignUpStep4 extends AppCompatActivity {
         signUpstep4Finish = (TextView) findViewById(R.id.signUpstep4Finish);
         listImages = new ArrayList<>();
         clickListenerForCameraCapture();
+        clickListenerForGallery();
         clickListenerForFinish();
 
+
+    }
+
+    private void clickListenerForGallery() {
+
+
+        signUpstep4SelectFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE_GALLERY);
+
+            }
+        });
 
     }
 
@@ -85,7 +113,7 @@ public class SignUpStep4 extends AppCompatActivity {
                 Map<String, String> headers = new HashMap<>();
                 Log.d("header from Details", token);
                 headers.put("token", token);
-                Call<LoginResponse> loginResponse = Api_call_merchant.getService().getLoginResponse(headers,merchantDetail);
+                Call<LoginResponse> loginResponse = Api_call_merchant.getService().getLoginResponse(headers, merchantDetail);
                 loginResponse.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -97,7 +125,7 @@ public class SignUpStep4 extends AppCompatActivity {
                         Log.d("tag", response.toString());
                         Log.d("tag", response.body().getMessage());
                         Log.d("tag", response.headers().toString());
-                        Intent intent = new Intent(SignUpStep4.this, LoginActivity.class);
+                        Intent intent = new Intent(SignUpStep4.this, MerchantHome.class);
                         intent.putExtra("Token", token);
                         startActivity(intent);
 
@@ -156,12 +184,135 @@ public class SignUpStep4 extends AppCompatActivity {
 
 
             if (tempUri != null) {
+                System.out.println("From Camera");
                 imageCountDialog = 1;
+                System.out.println(imageCountDialog + "count");
                 Uri imageUri = tempUri;
+
+//                uploadToImageKit(imageUri);
                 uploadImage(imageUri);
                 //do something with the image (save it to some directory or whatever you need to do with it here)
             }
         }
+
+
+        //*********************************This is for multiple Gallery Iamges Selected!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+        else if (requestCode == SELECT_PICTURE_GALLERY && resultCode == RESULT_OK) {
+            imageCountDialog = 0;
+            currentImageCount = 0;
+            dialog = new ProgressDialog(this); // this = YourActivity
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setTitle("Loading");
+            dialog.setMessage("Loading. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            if (data.getClipData() != null) {
+                int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                Log.d("count of images is", count + "");
+                imageCountDialog = count;
+                for (int i = 0; i < count; i++) {
+                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
+//                    uploadToImageKit(imageUri);
+                    uploadImage(imageUri);
+                }//do something with the image (save it to some directory or whatever you need to do with it here)
+
+            } else if (data.getData() != null) {
+                imageCountDialog = 1;
+                Uri imageUri = data.getData();
+                uploadImage(imageUri);
+                //do something with the image (save it to some directory or whatever you need to do with it here)
+            }
+        }
+
+
+    }
+
+    private void uploadToImageKit(Uri imageUri) {
+
+        try {
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            final String encodedImage = encodeImage(selectedImage);
+
+
+            Map<String, String> headers = new HashMap<>();
+            Log.d("header from Details", token);
+            headers.put("token", token);
+            Call<Signature> loginResponse = Api_Upload.getService().getSignature(headers);
+            loginResponse.enqueue(new Callback<Signature>() {
+                @Override
+                public void onResponse(Call<Signature> call, Response<Signature> response) {
+                    Log.d("tag", response.message());
+                    if (!response.isSuccessful()) {
+                        Log.d("tag", response.toString());
+                        return;
+                    }
+
+                    String token = response.body().token;
+                    String signature = response.body().signature;
+                    long expiry = response.body().expiry;
+
+                    System.out.println("tokenn " + token + " " + signature + " " + expiry);
+
+
+                    // Now hitting the ImageKit URI
+                    Map<String, String> headers = new HashMap<>();
+                    Log.d("header from Details", token);
+                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+                    imageKitPost imageKitPost = new imageKitPost(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
+                            token, expiry, email,"data:image/jpeg;base64,"+encodedImage);
+
+//                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage(headers, );
+//                    loginResponse.enqueue(new Callback<ImageKitResponse>() {
+//                        @Override
+//                        public void onResponse(Call<ImageKitResponse> call, Response<ImageKitResponse> response) {
+//                            Log.d("tag", response.message());
+//                            if (!response.isSuccessful()) {
+//                                Log.d("tag", response.toString());
+//                                return;
+//                            }
+//
+//
+//                            System.out.println(response.body().url+";urll");
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<ImageKitResponse> call, Throwable t) {
+//                            Toast.makeText(SignUpStep4.this, "failure", Toast.LENGTH_SHORT).show();
+//
+//
+//                        }
+//                    });
+
+
+                }
+
+                @Override
+                public void onFailure(Call<Signature> call, Throwable t) {
+                    Toast.makeText(SignUpStep4.this, "failure", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
     }
 
     private void uploadImage(Uri imageUri) {
@@ -178,6 +329,7 @@ public class SignUpStep4 extends AppCompatActivity {
                         Toast.makeText(SignUpStep4.this, "File Uploaded", Toast.LENGTH_LONG).show();
                         String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                         currentImageCount++;
+                        System.out.println(currentImageCount + " " + imageCountDialog + " debug");
                         if (currentImageCount == imageCountDialog)
                             dialog.dismiss();
                         Log.d("imagePath", downloadUrl);

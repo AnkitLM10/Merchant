@@ -47,7 +47,7 @@ public class ViewMerchantServices extends AppCompatActivity {
         Map<String, String> headers = new HashMap<>();
         headers.put("token", token);
         Log.d("MErchantID", MerchantId);
-        Call<ServiceOffered> loginResponse = Api_endPoint.getService().getServicesOffered(MerchantId, headers);
+        Call<ServiceOffered> loginResponse = Api_endPoint.getService().getServicesOffered(headers);
         loginResponse.enqueue(new Callback<ServiceOffered>() {
             @Override
             public void onResponse(Call<ServiceOffered> call, Response<ServiceOffered> response) {
@@ -56,6 +56,7 @@ public class ViewMerchantServices extends AppCompatActivity {
                     Log.d("tag", response.toString());
                     return;
                 }
+
 
                 Log.d("AllServicesOffered", response.body().data.size() + "");
 

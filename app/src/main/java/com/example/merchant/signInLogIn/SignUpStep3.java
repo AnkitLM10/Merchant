@@ -79,7 +79,7 @@ public class SignUpStep3 extends AppCompatActivity {
                     return;
                 }
 
-                if (latitude == -9999 || longitude == 9999) {
+                if (latitude == -9999 || longitude == -9999) {
                     Toast.makeText(SignUpStep3.this, "Please Select the Location", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -142,6 +142,7 @@ public class SignUpStep3 extends AppCompatActivity {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         System.out.println(latitude + " " + longitude + ";;");
+                        signUpStep3Continue.setText("Continue");
                     }
 
                     @Override
@@ -197,6 +198,7 @@ public class SignUpStep3 extends AppCompatActivity {
             signUpStep3Continue.setText("Continue");
             Log.d("tag", longitude + " " + latitude);
             System.out.println(latitude + " " + longitude + ";;");
+            signUpStep3Continue.setText("Continue");
         }
     };
 

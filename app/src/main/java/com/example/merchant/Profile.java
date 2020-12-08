@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +21,10 @@ import android.widget.Toast;
 import com.example.merchant.merchantInfo.ImageArr;
 import com.example.merchant.merchantInfo.Message;
 import com.example.merchant.pojo.AddImages;
+import com.example.merchant.pojo.ImageKitResponse;
+import com.example.merchant.pojo.Signature;
+import com.example.merchant.pojo.imageKitPost;
+import com.example.merchant.signInLogIn.SignUpStep4;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -25,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +42,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,6 +123,7 @@ public class Profile extends AppCompatActivity {
                 layoutParams = new LinearLayout.LayoutParams(0, 500);
                 layoutParams.weight = 1.0f;
                 imageView.setLayoutParams(layoutParams);
+                System.out.println("image address " + listImageArr.get(index).imageAddress);
                 Picasso.with(Profile.this).load(listImageArr.get(index).imageAddress).fit().into(imageView);
                 linearLayout.addView(imageView);
                 index++;
@@ -154,14 +166,16 @@ public class Profile extends AppCompatActivity {
                 imageCountDialog = count;
                 for (int i = 0; i < count; i++) {
                     Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    uploadImage(imageUri);
+                    uploadToImageKit(imageUri);
+//                    uploadImage(imageUri);
                 }//do something with the image (save it to some directory or whatever you need to do with it here)
 
             } else if (data.getData() != null) {
                 Log.d("count of images is", 1 + "");
                 imageCountDialog = 1;
                 Uri imageUri = data.getData();
-                uploadImage(imageUri);
+                uploadToImageKit(imageUri);
+//                uploadImage(imageUri);
                 //do something with the image (save it to some directory or whatever you need to do with it here)
             }
 //            mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -307,5 +321,117 @@ public class Profile extends AppCompatActivity {
 
     }
 
+
+    private void uploadToImageKit(Uri imageUri) {
+
+        try {
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            final String encodedImage = encodeImage(selectedImage);
+
+
+            Map<String, String> headers = new HashMap<>();
+            Log.d("header from Details", token);
+            headers.put("token", token);
+            Call<Signature> loginResponse = Api_Upload.getService().getSignature(headers);
+            loginResponse.enqueue(new Callback<Signature>() {
+                @Override
+                public void onResponse(Call<Signature> call, Response<Signature> response) {
+                    Log.d("tag", response.message());
+                    if (!response.isSuccessful()) {
+                        Log.d("tag", response.toString());
+                        return;
+                    }
+
+                    String token = response.body().token;
+                    String signature = response.body().signature;
+                    long expiry = response.body().expiry;
+
+                    System.out.println("tokenn " + token + " " + signature + " " + expiry);
+
+
+                    // Now hitting the ImageKit URI
+//                    Map<String, String> headers = new HashMap<>();
+//                    Log.d("header from Details", token);
+//                    headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.setType(MultipartBody.FORM)
+                            .addFormDataPart("file", "data:image/jpeg;base64," + encodedImage)
+                            .addFormDataPart("fileName", System.currentTimeMillis() + ".png")
+                            .addFormDataPart("tags", "Simple")
+                            .addFormDataPart("signature", signature)
+                            .addFormDataPart("publicKey", getResources().getString(R.string.imagekitKey))
+                            .addFormDataPart("token", token)
+                            .addFormDataPart("expire", expiry + "")
+                            .addFormDataPart("folder", listData.email+"/")
+                            .build();
+                    RequestBody requestBody = builder.build();
+
+                    imageKitPost imageKitPost = new imageKitPost(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
+                            token, expiry, listData.email, "data:image/jpeg;base64," + encodedImage);
+
+                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage("data:image/jpeg;base64," + encodedImage,
+                            System.currentTimeMillis() + ".jpg",
+                            "Simple",
+                            signature,
+                            "public_ks+Di7EZRiH4Yd8qP0b9UPnEIOs=",
+                            token,
+                            expiry,
+                            listData.email+"/"
+                    );
+
+//                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage(requestBody);
+
+                    loginResponse.enqueue(new Callback<ImageKitResponse>() {
+                        @Override
+                        public void onResponse(Call<ImageKitResponse> call, Response<ImageKitResponse> response) {
+                            Log.d("tag", response.message());
+                            if (!response.isSuccessful()) {
+                                Log.d("tag", response.toString());
+                                return;
+                            }
+
+
+                            System.out.println(response.body().url + ";urll");
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ImageKitResponse> call, Throwable t) {
+                            Toast.makeText(Profile.this, "failure", Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+
+
+                }
+
+                @Override
+                public void onFailure(Call<Signature> call, Throwable t) {
+                    Toast.makeText(Profile.this, "failure", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
+    }
 
 }

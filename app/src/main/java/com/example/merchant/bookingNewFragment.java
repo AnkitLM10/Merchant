@@ -1,7 +1,9 @@
 package com.example.merchant;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +38,7 @@ public class bookingNewFragment extends Fragment {
     Context context = null;
     Dialog settingsDialog;
     CustomListView customListView;
-
+    List<Booking> newBooking;
     ListView listView;
 
     @Nullable
@@ -41,15 +46,74 @@ public class bookingNewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booking_past, container, false);
         context = container.getContext();
+        newBooking = new ArrayList<>();
+        // getting all new booking...................................
+        collectingAllNewBooking(view);
 
-
-        listView = (ListView) view.findViewById(R.id.listViewPastBooking);
-
-        customListView = new CustomListView(MerchantHome.newBooking.size(), context, MerchantHome.newBooking);
-        listView.setAdapter(customListView);
 
         return view;
     }
+
+    private void collectingAllNewBooking(final View view) {
+
+
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Loading");
+        dialog.setMessage("Fetching Merchant Booking Details...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        System.out.println("inside booking merchant " + MerchantHome.token);
+        Map<String, String> headers = new HashMap<>();
+        Log.d("header from Details", MerchantHome.token);
+        headers.put("token", MerchantHome.token);
+        Call<BookingResponse> loginResponse = Api_booking.getService().getAllBooking(headers);
+        loginResponse.enqueue(new Callback<BookingResponse>() {
+            @Override
+            public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+                Log.d("tag", call.toString());
+                if (!response.isSuccessful()) {
+                    Log.d("tag", response.toString());
+                    Toast.makeText(getContext(), "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+                dialog.dismiss();
+                Log.d("tag", response.toString());
+                Log.d("tagSize", response.body().bookings.size() + "");
+
+                for (int i = 0; i < response.body().bookings.size(); i++) {
+
+                    if (response.body().bookings.get(i).status.equals("pending"))
+                        newBooking.add(response.body().bookings.get(i));
+                }
+
+
+                listView = (ListView) view.findViewById(R.id.listViewPastBooking);
+
+                customListView = new CustomListView(newBooking.size(), context, newBooking);
+                listView.setAdapter(customListView);
+
+
+            }
+
+
+            @Override
+            public void onFailure(Call<BookingResponse> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(context, "Problem Fetching Merchant Booking Details", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                System.out.println(t.getCause().getMessage());
+                System.out.println("fail......... " + call.request().url() + "");
+                System.out.println("fail......... " + call.toString() + "pending");
+
+            }
+        });
+
+
+    }
+
 
     class CustomListView extends BaseAdapter {
         int size = 0;
@@ -79,7 +143,7 @@ public class bookingNewFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return size;
+            return bookingList.size();
         }
 
         @Override
@@ -114,27 +178,27 @@ public class bookingNewFragment extends Fragment {
                     settingsDialog.setContentView(R.layout.dialog_box_layout);
                     settingsDialog.getWindow().setLayout(
                             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    Button cancelButton = (Button) settingsDialog.findViewById(R.id.cancelBooking);
+//                    Button cancelButton = (Button) settingsDialog.findViewById(R.id.cancelBooking);
                     Button approveButton = (Button) settingsDialog.findViewById(R.id.approveBooking);
                     Button denyButton = (Button) settingsDialog.findViewById(R.id.denyBooking);
-                    Button completedButton = (Button) settingsDialog.findViewById(R.id.completedBooking);
+//                    Button completedButton = (Button) settingsDialog.findViewById(R.id.completedBooking);
 
-                    cancelButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Toast.makeText(context, "cancel Clicked " + i, Toast.LENGTH_SHORT).show();
-
-                            bookingAction("cancel", bookingList.get(i), settingsDialog);
-
-                        }
-                    });
+//                    cancelButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Toast.makeText(context, "cancel Clicked " + i, Toast.LENGTH_SHORT).show();
+//
+//                            bookingAction("cancel", bookingList.get(i), settingsDialog);
+//
+//                        }
+//                    });
 
 
                     approveButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(context, "approve Clicked " + i, Toast.LENGTH_SHORT).show();
-                            bookingAction("approve", bookingList.get(i), settingsDialog);
+                            bookingAction("accepted", bookingList.get(i), settingsDialog);
 
                         }
                     });
@@ -143,20 +207,20 @@ public class bookingNewFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(context, "deny Clicked " + i, Toast.LENGTH_SHORT).show();
-                            bookingAction("deny", bookingList.get(i), settingsDialog);
+                            bookingAction("denied", bookingList.get(i), settingsDialog);
 
                         }
                     });
 
 
-                    completedButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Toast.makeText(context, "completed Clicked " + i, Toast.LENGTH_SHORT).show();
-                            bookingAction("completed", bookingList.get(i), settingsDialog);
-
-                        }
-                    });
+//                    completedButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Toast.makeText(context, "completed Clicked " + i, Toast.LENGTH_SHORT).show();
+//                            bookingAction("completed", bookingList.get(i), settingsDialog);
+//
+//                        }
+//                    });
 
 
                     settingsDialog.show();
@@ -168,7 +232,8 @@ public class bookingNewFragment extends Fragment {
         }
 
         private void bookingAction(final String action, final Booking booking, final Dialog settingsDialog) {
-
+            System.out.println(booking.bookingId + " Booking Id");
+            System.out.println("Header :" + MerchantHome.token);
             BookingDataAction bookingDataAction = new BookingDataAction(booking.bookingId, action);
             Map<String, String> headers = new HashMap<>();
             headers.put("token", MerchantHome.token);
@@ -179,15 +244,28 @@ public class bookingNewFragment extends Fragment {
 
                     if (!response.isSuccessful()) {
                         Log.d("tag", response.toString());
+                        settingsDialog.dismiss();
                         return;
                     }
 
-                    if (action.equals("approve")) {
+                    if (action.equals("accepted")) {
 
                         // means this must now come in upcoming ones.............
-                        MerchantHome.upcomingBooking.add(booking);
-                        MerchantHome.newBooking.remove(booking);
+
+                        System.out.println("Approve is clicked!");
+                        System.out.println(bookingList.size()+" Before Removing");
+                        bookingList.remove(booking);
+                        System.out.println(bookingList.size()+" After Removing");
                         customListView.notifyDataSetChanged();
+
+                    }else if(action.equals("denied"))
+                    {
+                        System.out.println("cancel is clicked!");
+                        System.out.println(bookingList.size()+" Before Removing");
+                        bookingList.remove(booking);
+                        System.out.println(bookingList.size()+" After Removing");
+                        customListView.notifyDataSetChanged();
+
 
                     }
 

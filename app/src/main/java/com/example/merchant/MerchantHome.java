@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.example.merchant.menu.FeedbackActivity;
 import com.example.merchant.merchantInfo.*;
 
+import com.example.merchant.signInLogIn.SignIn;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.collection.LLRBNode;
@@ -86,93 +88,115 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
         gettingMerchantDetails();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.merchantHomeNavbarContainer, new bookingFragment()).commit();
-
+        bookingFragment bookingFragment = new bookingFragment();
+        setListener(bookingFragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.merchantHomeNavbarContainer, bookingFragment).commit();
+        listener.myAction();
 
     }
 
     private void gettingMerchantBookingDetails() {
 
-        upcomingBooking = new ArrayList<>();
-        newBooking = new ArrayList<>();
-        pastBooking = new ArrayList<>();
-
-
-        System.out.println("inside booking merchant " + token);
-        Map<String, String> headers = new HashMap<>();
-        Log.d("header from Details", token);
-        headers.put("token", token);
-        Call<BookingResponse> loginResponse = Api_booking.getService().getAllBooking(headers);
-        loginResponse.enqueue(new Callback<BookingResponse>() {
-            @Override
-            public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
-                Log.d("tag", call.toString());
-                if (!response.isSuccessful()) {
-                    Log.d("tag", response.toString());
-                    return;
-                }
-
-                Log.d("tag", response.toString());
-                Log.d("tagSize", response.body().bookings.size() + "");
-
-                for (int i = 0; i < response.body().bookings.size(); i++) {
-                    SimpleDateFormat
-                            sdfo
-                            = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-//2020-08-19T12:59:38.226+00:00
-
-                    try {
-                        String str1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(response.body().bookings.get(i).date);
-                        Date d1 = sdfo.parse(str1);
-                        Date date = new Date();
-                        String str = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(date);
-                        Date d2 = sdfo.parse(str);
-
-                        System.out.println(i + " " + response.body().bookings.get(i).payableAmount);
-                        if (d1.after(d2)) {
-                            // means upcoming.....
-                            System.out.println("New......");
-                            if (response.body().bookings.get(i).status.equals("approve")) {
-                                //means already approved......................
-                                upcomingBooking.add(response.body().bookings.get(i));
-                            } else {
-
-                                newBooking.add(response.body().bookings.get(i));
-                            }
-                        } else if (d1.before(d2)) {
-                            //means Past Booking.......
-                            System.out.println("PAst......");
-                            pastBooking.add(response.body().bookings.get(i));
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("exxxxx");
-                    }
-                }
-                System.out.println("coming outtttt.........");
-
-//                Log.d("tag", response.body());
-
-
-            }
-
-
-            @Override
-            public void onFailure(Call<BookingResponse> call, Throwable t) {
-                t.printStackTrace();
-                System.out.println(t.getCause().getMessage());
-                System.out.println("fail......... " + call.request().url() + "");
-                System.out.println("fail......... " + call.toString() + "");
-
-            }
-        });
+//        upcomingBooking = new ArrayList<>();
+//        newBooking = new ArrayList<>();
+//        pastBooking = new ArrayList<>();
+//
+//
+//        final ProgressDialog dialog = new ProgressDialog(MerchantHome.this);
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.setTitle("Loading");
+//        dialog.setMessage("Fetching Merchant Booking Details...");
+//        dialog.setIndeterminate(true);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.show();
+//        System.out.println("inside booking merchant " + token);
+//        Map<String, String> headers = new HashMap<>();
+//        Log.d("header from Details", token);
+//        headers.put("token", token);
+//        Call<BookingResponse> loginResponse = Api_booking.getService().getAllBooking(headers);
+//        loginResponse.enqueue(new Callback<BookingResponse>() {
+//            @Override
+//            public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+//                Log.d("tag", call.toString());
+//                if (!response.isSuccessful()) {
+//                    Log.d("tag", response.toString());
+//                    Toast.makeText(MerchantHome.this, "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+//                    dialog.dismiss();
+//                    return;
+//                }
+//                dialog.dismiss();
+//                Log.d("tag", response.toString());
+//                Log.d("tagSize", response.body().bookings.size() + "");
+//
+//                for (int i = 0; i < response.body().bookings.size(); i++) {
+//                    SimpleDateFormat
+//                            sdfo
+//                            = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+////2020-08-19T12:59:38.226+00:00
+//
+//                    try {
+//                        String str1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(response.body().bookings.get(i).date);
+//                        Date d1 = sdfo.parse(str1);
+//                        Date date = new Date();
+//                        String str = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(date);
+//                        Date d2 = sdfo.parse(str);
+//
+//                        System.out.println(i + " " + response.body().bookings.get(i).payableAmount);
+//                        System.out.println(i + " " + response.body().bookings.get(i).status);
+//                        if (d1.after(d2)) {
+//                            // means upcoming.....
+//                            System.out.println("New......");
+//                            if (response.body().bookings.get(i).status.equals("approve")) {
+//                                //means already approved......................
+//                                upcomingBooking.add(response.body().bookings.get(i));
+//                            } else {
+//
+//                                newBooking.add(response.body().bookings.get(i));
+//                            }
+//                        } else if (d1.before(d2)) {
+//                            //means Past Booking.......
+//                            System.out.println("Past......");
+//                            pastBooking.add(response.body().bookings.get(i));
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        System.out.println("exxxxx");
+//                    }
+//                }
+//                System.out.println("coming outtttt.........");
+//
+////                Log.d("tag", response.body());
+//
+//
+//            }
+//
+//
+//            @Override
+//            public void onFailure(Call<BookingResponse> call, Throwable t) {
+//                t.printStackTrace();
+//                Toast.makeText(MerchantHome.this, "Problem Fetching Merchant Booking Details", Toast.LENGTH_LONG).show();
+//                dialog.dismiss();
+//                System.out.println(t.getCause().getMessage());
+//                System.out.println("fail......... " + call.request().url() + "");
+//                System.out.println("fail......... " + call.toString() + "");
+//
+//            }
+//        });
 
 
     }
 
     private void gettingMerchantDetails() {
 
+
+        final ProgressDialog dialog = new ProgressDialog(MerchantHome.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Loading");
+        dialog.setMessage("Fetching Merchant Details...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("token", token);
@@ -183,9 +207,12 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
                 Log.d("tag", call.toString());
                 if (!response.isSuccessful()) {
                     Log.d("tag", response.toString());
+                    Toast.makeText(MerchantHome.this, "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
                     return;
                 }
 
+                dialog.dismiss();
                 Log.d("tag", response.toString());
 
                 Log.d("tag", response.body().getMessage().merchantName);
@@ -212,7 +239,6 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
                 image.setText(response.body().getMessage().imageArr.size() + " Image");
 
 
-
                 menuView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -225,7 +251,7 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
                         intent.putExtra("MerchantId", MerchantId);
                         args.putSerializable("Message", (Serializable) response.body().getMessage());
                         args.putSerializable("Image", (Serializable) response.body().getMessage().imageArr);
-                        System.out.println(response.body().message.imageArr.size()+"sizeee");
+                        System.out.println(response.body().message.imageArr.size() + "sizeee");
                         intent.putExtra("BUNDLE", args);
                         startActivity(intent);
                     }
@@ -238,7 +264,8 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onFailure(Call<MerchantInfo> call, Throwable t) {
-
+                Toast.makeText(MerchantHome.this, "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
 
             }
         });
@@ -427,5 +454,13 @@ public class MerchantHome extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public interface MyInterface {
+        void myAction();
+    }
 
+    private MyInterface listener;
+
+    public void setListener(MyInterface listener) {
+        this.listener = listener;
+    }
 }

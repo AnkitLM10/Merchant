@@ -1,5 +1,6 @@
 package com.example.merchant;
 
+import com.example.merchant.pojo.NewPassword;
 import com.example.merchant.pojo.ValidateOtp;
 import com.example.merchant.pojo.ValidateOtpCallback;
 import com.example.merchant.pojo.VerifyUniqueDetail;
@@ -17,6 +18,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public class Api_call {
     public static String BASE_URL = "https://bmkauth.herokuapp.com/";
@@ -50,7 +52,16 @@ public class Api_call {
         Call<VerifyUniqueDetailCallback> verifyUniqueDetails(@Body VerifyUniqueDetail verifyUniqueDetail);
 
         @PUT("api/v1/user/validateOtp")
-        Call<ValidateOtpCallback> validateOtp(@HeaderMap Map<String, String> headers,@Body ValidateOtp validateOtp);
+        Call<ValidateOtpCallback> validateOtp(@HeaderMap Map<String, String> headers, @Body ValidateOtp validateOtp);
+
+        @PUT("api/v1/user/forgotPassword")
+        Call<ValidateOtpCallback> forgetPasswordEmail(@Query("email") String email);
+
+        @PUT("api/v1/user/forgotPassword")
+        Call<ValidateOtpCallback> forgetPasswordPhone(@Query("phone") String email);
+
+        @PUT("api/v1/user/resetPassword?type=forgot")
+        Call<ValidateOtpCallback> newPassword(@HeaderMap Map<String, String> headers, @Body NewPassword newPassword);
 
 
 //        @POST("merchant")

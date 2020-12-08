@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".signInLogIn.SignUpStep5">
+
+
+    <TextView
+        android:id="@+id/welcomeOnboardStep5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Welcome Onboard!"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/accountActivated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeOnboardStep5"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Your account is activated now."
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/portfolioSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/accountActivated"
+        android:layout_marginTop="3dp"
+        android:padding="10dp"
+        android:text="Now just select the services that you wish to offer.\nYou can edit them later."
+        android:textSize="16sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/portfolioSelect"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+        android:weightSum="10"
+
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/signUpStep5CreatePortfolio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@drawable/edit_text_cutomisable"
+            android:hint="Create my portfolio"
+            android:textSize="18sp"
+            android:paddingLeft="20dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textColorHint="#000" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

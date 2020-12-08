@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class SignUpStep2 extends AppCompatActivity {
 
-    String token, email, phone, password , name;
+    String token, email, phone, password, name;
     TextView signUpStep2OtpText, signUpStep2Continue;
     EditText signUpStep2Otp;
 
@@ -50,6 +50,7 @@ public class SignUpStep2 extends AppCompatActivity {
 
     private void onClickListenerForContinueButton() {
 
+
         signUpStep2Continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +60,15 @@ public class SignUpStep2 extends AppCompatActivity {
                     return;
                 }
 
+
+                //This one when coming from forget password.............................................................
+                if (email.equals("") || phone.equals("")) {
+                    forgetPasswordOtpVerification();
+                    return;
+                }
+
+
+                //This one during normal flow of signUp
                 Map<String, String> headers = new HashMap<>();
                 Log.d("header from Details", token);
                 headers.put("token", token);
@@ -98,6 +108,55 @@ public class SignUpStep2 extends AppCompatActivity {
 
                     }
                 });
+
+
+            }
+        });
+
+
+    }
+
+    private void forgetPasswordOtpVerification() {
+
+        String otp = signUpStep2Otp.getText().toString();
+        if (otp.equals("")) {
+            Toast.makeText(SignUpStep2.this, "Please Enter Otp", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        Map<String, String> headers = new HashMap<>();
+        Log.d("header from Details", token);
+        headers.put("token", token);
+
+        ValidateOtp validateOtp = new ValidateOtp();
+        validateOtp.otp = otp;
+
+        Call<ValidateOtpCallback> loginResponse = Api_call.getService().validateOtp(headers, validateOtp);
+        loginResponse.enqueue(new Callback<ValidateOtpCallback>() {
+            @Override
+            public void onResponse(Call<ValidateOtpCallback> call, Response<ValidateOtpCallback> response) {
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(SignUpStep2.this, "Wrong Otp!", Toast.LENGTH_SHORT).show();
+                    Log.d("tag", response.toString());
+                    return;
+                }
+
+                Log.d("tag", response.toString());
+                Log.d("tag", response.body().getMessage());
+                Log.d("tag", response.headers().toString());
+                Intent intent = new Intent(SignUpStep2.this, newPassword.class);
+                intent.putExtra("Token", response.body().token);
+                startActivity(intent);
+                finish();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ValidateOtpCallback> call, Throwable t) {
+                Toast.makeText(SignUpStep2.this, "failure", Toast.LENGTH_SHORT).show();
 
 
             }

@@ -218,10 +218,7 @@ public class Merchant extends AppCompatActivity {
                 , email.getText().toString(), phoneNumber.getText().toString(), latitude
                 , longitude, listImages, password.getText().toString()
         );
-        Map<String, String> headers = new HashMap<>();
-        Log.d("header from Details", token);
-        headers.put("token", token);
-        Call<LoginResponse> loginResponse = Api_call_merchant.getService().getLoginResponse(headers,merchantDetail);
+        Call<LoginResponse> loginResponse = Api_call_merchant.getService().getLoginResponse(merchantDetail);
         loginResponse.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {

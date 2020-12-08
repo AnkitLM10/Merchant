@@ -48,5 +48,7 @@ public class Api_call_merchant {
 
         @PUT("merchant/addImages")
         Call<LoginResponse> addImages(@Query("merchantId") String categoryId, @HeaderMap Map<String, String> headers, @Body AddImages addImages);
+
+        Call<LoginResponse> getLoginResponse(MerchantDetail merchantDetail);
     }
 }
