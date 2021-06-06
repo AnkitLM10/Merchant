@@ -2,10 +2,11 @@ package com.example.merchant;
 
 import com.example.merchant.pojo.ImageKitResponse;
 import com.example.merchant.pojo.Signature;
-import com.example.merchant.pojo.imageKitPost;
+import com.example.merchant.pojo.ImageKitResponse;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -18,6 +19,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public class Api_ImageKit {
     public static String BASE_URL = "https://upload.imagekit.io/api/v1/files/";
@@ -37,25 +39,56 @@ public class Api_ImageKit {
     }
 
     public interface APIService {
+//        @FormUrlEncoded
+//        @POST("upload")
+//        @Headers({"Content-Type: application/x-www-form-urlencoded"})
+//        Call<ImageKitResponse> getUploadedImage(@Field("file") String file,
+//                                                @Field("fileName") String fileName,
+//                                                @Field("tags") String tags,
+//                                                @Field("signature") String signature,
+//                                                @Field("publicKey") String publicKey,
+//                                                @Field("token") String token,
+//                                                @Field("expire") long expire,
+//                                                @Field("folder") String folder
+//        );
+//
+//                @Multipart
+//        @POST("upload")
+//        @Headers({"Content-Type: application/x-www-form-urlencoded"})
+//        Call<ImageKitResponse> getUploadedImage(
+//                @Body RequestBody file
+//        );
+
+
+
+
+//        @Multipart
+//        @POST("user/updateprofile")
+//        Call<ImageKitResponse> getUploadedImage(@Part MultipartBody.Part file,
+//                                                @Part("fileName") String fileName,
+//                                                @Part("tags") String tags,
+//                                                @Part("signature") String signature,
+//                                                @Part("publicKey") String publicKey,
+//                                                @Part("token") String token,
+//                                                @Part("expire") String expire,
+//                                                @Part("folder") String folder
+
+//        );
+
+
+
         @FormUrlEncoded
         @POST("upload")
-        @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<ImageKitResponse> getUploadedImage(@Field("file") String file,
                                                 @Field("fileName") String fileName,
                                                 @Field("tags") String tags,
                                                 @Field("signature") String signature,
                                                 @Field("publicKey") String publicKey,
                                                 @Field("token") String token,
-                                                @Field("expire") long expire,
+                                                @Field("expire") String expire,
                                                 @Field("folder") String folder
-                                                );
 
-//        @Multipart
-//        @POST("upload")
-//        @Headers({"Content-Type: application/x-www-form-urlencoded"})
-//        Call<ImageKitResponse> getUploadedImage(
-//                @Body RequestBody file
-//        );
+        );
 
 
     }

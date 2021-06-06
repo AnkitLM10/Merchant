@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-class ExpandableAdapterListServicesOfferedextends extends BaseExpandableListAdapter {
+class ExpandableAdapterListServicesOffered extends BaseExpandableListAdapter {
     String token = "";
     String MerchantId = "";
     private Context _context;
@@ -24,7 +24,7 @@ class ExpandableAdapterListServicesOfferedextends extends BaseExpandableListAdap
     // child data in format of header title, child title
     HashMap<String, List<ServiceDataList>> _listDataChild;
 
-    public ExpandableAdapterListServicesOfferedextends(Context context, List<String> listDataHeader,
+    public ExpandableAdapterListServicesOffered(Context context, List<String> listDataHeader,
                                                        HashMap<String, List<ServiceDataList>> listChildData, String token, String merchantId) {
         this._context = context;
         this._listDataHeader = listDataHeader;
@@ -60,7 +60,14 @@ class ExpandableAdapterListServicesOfferedextends extends BaseExpandableListAdap
         TextView serviceOfferedPriceAndDiscount = (TextView) convertView.findViewById(R.id.serviceOfferedPriceAndDiscount);
         ImageView servicesOfferedEdit = (ImageView) convertView.findViewById(R.id.servicesOfferedEdit);
         serviceOfferedChildTitle.setText(serviceDataList.service.service);
-        serviceOfferedPriceAndDiscount.setText(rupee + " " + serviceDataList.price + "   " + serviceDataList.discountPercentage + " %     Off");
+
+        String discountText = "";
+        if(serviceDataList.discountPercentage == 0)
+            discountText = rupee + " " + serviceDataList.price + "   "  + " No Discount";
+        else
+            discountText = rupee + " " + serviceDataList.price + "   " + serviceDataList.discountPercentage + " %     Off";
+
+        serviceOfferedPriceAndDiscount.setText(discountText);
         servicesOfferedEdit.setOnClickListener(null);
         servicesOfferedEdit.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,32 +6,91 @@
     android:layout_height="match_parent"
     tools:context=".ViewMerchantServices">
 
-    <LinearLayout
-        android:id="@+id/servicesOfferedTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/categorySelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="My Services"
-            android:textSize="18sp"
-            android:textColor="#FFF" />
-
-    </LinearLayout>
-
-
-    <ExpandableListView
-        android:id="@+id/lvExpServiceOffered"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/servicesOfferedTitle"
-        android:layout_marginTop="2dp" />
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:openDrawer="start">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:background="@color/primary_material_dark"
+                app:titleTextColor="#fff"
+
+                style="@style/myActionTheme"
+
+                app:popupTheme="@style/myActionTheme" />
+            <TextView
+                android:id="@+id/categorySelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000"
+                android:gravity="center"
+                android:layout_below="@id/toolbar"
+                android:padding="15dp"
+                android:text="My Services"
+                android:textSize="18sp"
+                android:textColor="#FFF" />
+            <ExpandableListView
+                android:id="@+id/lvExpServiceOffered"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/categorySelected"
+                android:layout_marginTop="2dp" />
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/servicesOfferedTitle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/categorySelected"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#000"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:text="My Services"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFF" />-->
+
+<!--    </LinearLayout>-->
+
+
+<!--    <ExpandableListView-->
+<!--        android:id="@+id/lvExpServiceOffered"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/servicesOfferedTitle"-->
+<!--        android:layout_marginTop="2dp" />-->
 
 
 </RelativeLayout>

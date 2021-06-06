@@ -1,5 +1,6 @@
 package com.example.merchant;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -41,6 +42,12 @@ public class bookingNewFragment extends Fragment {
     List<Booking> newBooking;
     ListView listView;
 
+
+    Activity activity;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = activity;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,7 +82,7 @@ public class bookingNewFragment extends Fragment {
                 Log.d("tag", call.toString());
                 if (!response.isSuccessful()) {
                     Log.d("tag", response.toString());
-                    Toast.makeText(getContext(), "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Problem Fetching Merchant Details", Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                     return;
                 }
@@ -167,7 +174,7 @@ public class bookingNewFragment extends Fragment {
                 row.setTag(holder);
             } else
                 holder = (MyViewHolder) row.getTag();
-            String dateString = android.text.format.DateFormat.format("hh:mm aa dd MMMM", bookingList.get(i).date).toString();
+            String dateString = android.text.format.DateFormat.format("hh:mm aa dd MMM", bookingList.get(i).date).toString();
             holder.bookingDate.setText(dateString);
             holder.bookingAmount.setText(getResources().getString(R.string.rupee) + " " + bookingList.get(i).payableAmount);
             holder.mainLayoutBooking.setOnClickListener(new View.OnClickListener() {

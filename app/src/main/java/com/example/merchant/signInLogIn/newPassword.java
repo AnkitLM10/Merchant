@@ -27,6 +27,7 @@ public class newPassword extends AppCompatActivity {
 
 
     EditText newPasswordEditText;
+    EditText confirmPasswordEditText;
     TextView newPasswordContinue;
     String token;
 
@@ -36,6 +37,7 @@ public class newPassword extends AppCompatActivity {
         setContentView(R.layout.activity_new_password);
 
         newPasswordEditText = (EditText) findViewById(R.id.newPasswordEditText);
+        confirmPasswordEditText = (EditText) findViewById(R.id.confirmPasswordEditText);
         newPasswordContinue = (TextView) findViewById(R.id.newPasswordContinue);
         token = getIntent().getStringExtra("Token");
         setOnClickListenerForContinueButton();
@@ -49,10 +51,23 @@ public class newPassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String newPassword = newPasswordEditText.getText().toString();
+                String confirmPassword = confirmPasswordEditText.getText().toString();
                 if (newPassword.equals("")) {
                     Toast.makeText(newPassword.this, "Please Enter The New Password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (newPassword.length()<8) {
+                    Toast.makeText(newPassword.this, "Please Enter atleast 8 Character!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!confirmPassword.equals(newPassword))
+                {
+                    Toast.makeText(newPassword.this, "Password did not Match!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 NewPassword newPassword1 = new NewPassword();
                 newPassword1.password = newPassword;

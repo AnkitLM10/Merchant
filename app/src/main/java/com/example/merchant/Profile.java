@@ -1,16 +1,23 @@
 package com.example.merchant;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,15 +25,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchant.menu.ContactUs;
+import com.example.merchant.menu.FeedbackActivity;
 import com.example.merchant.merchantInfo.ImageArr;
 import com.example.merchant.merchantInfo.Message;
 import com.example.merchant.pojo.AddImages;
 import com.example.merchant.pojo.ImageKitResponse;
 import com.example.merchant.pojo.Signature;
-import com.example.merchant.pojo.imageKitPost;
+import com.example.merchant.pojo.ImageKitPost;
 import com.example.merchant.signInLogIn.SignUpStep4;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,6 +44,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,11 +59,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Profile extends AppCompatActivity {
+
+public class Profile extends AppCompatActivity   implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int SELECT_PICTURE = 1;
     LinearLayout mainLinearLayout;
     Message listData;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     List<ImageArr> listImageArr;
     TextView profileBooking;
     TextView profileAverageRating;
@@ -86,6 +100,20 @@ public class Profile extends AppCompatActivity {
         profilePhone = (TextView) findViewById(R.id.profilePhone);
         profileAddImage = (ImageView) findViewById(R.id.profileAddImage);
 
+        Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        // Setting  Menu Item Click Listener.....................
+        navigationView.setNavigationItemSelectedListener(this);
+
+        setMenuDetails();
+
         //Adding Image Adding Button
         addImageClick();
 
@@ -105,6 +133,28 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    private void setMenuDetails() {
+
+        View menuView = navigationView.getHeaderView(0);
+        TextView email = (TextView) menuView.findViewById(R.id.menuEmail);
+        email.setText( MerchantHome.emailText);
+
+
+        TextView name = (TextView) menuView.findViewById(R.id.menuName);
+        name.setText(MerchantHome.mainName);
+
+        TextView number = (TextView) menuView.findViewById(R.id.menuNumber);
+        number.setText(MerchantHome.mainNumber);
+
+
+        TextView image = (TextView) menuView.findViewById(R.id.menuImageSize);
+        image.setText(MerchantHome.mainImage+" Images");
+
+
+
+
+
+    }
     private void populateLinearLayoutWithImages() {
         int size = listImageArr.size();
         int index = 0;
@@ -320,15 +370,24 @@ public class Profile extends AppCompatActivity {
         });
 
     }
-
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
 
     private void uploadToImageKit(Uri imageUri) {
+
+
+
+
 
         try {
             final InputStream imageStream = getContentResolver().openInputStream(imageUri);
             final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
             final String encodedImage = encodeImage(selectedImage);
-
+            System.out.println(encodedImage+"encodeeed");
 
             Map<String, String> headers = new HashMap<>();
             Log.d("header from Details", token);
@@ -355,32 +414,47 @@ public class Profile extends AppCompatActivity {
 //                    Log.d("header from Details", token);
 //                    headers.put("Content-Type", "application/x-www-form-urlencoded");
 
+//
+//                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+//                    builder.setType(MultipartBody.FORM)
+//                            .addFormDataPart("file", "data:image/jpeg;base64," + encodedImage)
+//                            .addFormDataPart("fileName", System.currentTimeMillis() + ".png")
+//                            .addFormDataPart("tags", "Simple")
+//                            .addFormDataPart("signature", signature)
+//                            .addFormDataPart("publicKey", getResources().getString(R.string.imagekitKey))
+//                            .addFormDataPart("token", token)
+//                            .addFormDataPart("expire", expiry + "")
+//                            .addFormDataPart("folder", listData.email+"/")
+//                            .build();
 
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.setType(MultipartBody.FORM)
-                            .addFormDataPart("file", "data:image/jpeg;base64," + encodedImage)
-                            .addFormDataPart("fileName", System.currentTimeMillis() + ".png")
-                            .addFormDataPart("tags", "Simple")
-                            .addFormDataPart("signature", signature)
-                            .addFormDataPart("publicKey", getResources().getString(R.string.imagekitKey))
-                            .addFormDataPart("token", token)
-                            .addFormDataPart("expire", expiry + "")
-                            .addFormDataPart("folder", listData.email+"/")
-                            .build();
-                    RequestBody requestBody = builder.build();
 
-                    imageKitPost imageKitPost = new imageKitPost(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
-                            token, expiry, listData.email, "data:image/jpeg;base64," + encodedImage);
+                    //RequestBody requestBody = builder.build();
+//                    RequestBody req = builder.build();
 
-                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage("data:image/jpeg;base64," + encodedImage,
-                            System.currentTimeMillis() + ".jpg",
+//                    ImageKitResponse imageKitPost = new ImageKitResponse(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
+//                            token, expiry, listData.email, "data:image/jpeg;base64," + encodedImage);
+
+
+
+                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage("data:image/jpeg;base64," +encodedImage,System.currentTimeMillis() + ".jpg",
                             "Simple",
                             signature,
                             "public_ks+Di7EZRiH4Yd8qP0b9UPnEIOs=",
                             token,
-                            expiry,
-                            listData.email+"/"
-                    );
+                            expiry+"",
+                            listData.email+"/");
+
+
+
+//                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage("data:image/jpeg;base64," + encodedImage,
+//                            System.currentTimeMillis() + ".jpg",
+//                            "Simple",
+//                            signature,
+//                            "public_ks+Di7EZRiH4Yd8qP0b9UPnEIOs=",
+//                            token,
+//                            expiry,
+//                            listData.email+"/"
+//                    );
 
 //                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage(requestBody);
 
@@ -434,4 +508,69 @@ public class Profile extends AppCompatActivity {
         return encImage;
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.drawerViewPortfolio:
+                if (MerchantId == null) {
+                    Toast.makeText(Profile.this, "Please Try again Later!!", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                Toast.makeText(Profile.this, " View Portfolio Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(Profile.this, ViewMerchantServices.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                finish();
+                startActivity(intent);
+
+
+                break;
+
+            case R.id.drawerEditUpdatePortfolio:
+
+                Toast.makeText(Profile.this, " Edit/Update Portfolio Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(Profile.this, ViewCategory.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                finish();
+                startActivity(intent);
+                break;
+
+            case R.id.drawerCustomerFeedback:
+
+                Toast.makeText(Profile.this, "Feedback Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(Profile.this, FeedbackActivity.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                intent.putExtra("MerchantName", MerchantHome.mainName);
+                startActivity(intent);
+                finish();
+                break;
+
+            case R.id.drawerContactUs:
+                intent = new Intent(Profile.this, ContactUs.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                intent.putExtra("MerchantName", MerchantHome.mainName);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                finish();
+                break;
+//            case R.id.menuName:
+//
+//                Toast.makeText(MerchantHome.this, "Menu Name Clicked Clicked!", Toast.LENGTH_LONG).show();
+////                intent = new Intent(MerchantHome.this, FeedbackActivity.class);
+////                intent.putExtra("Token", token);
+////                intent.putExtra("MerchantId", MerchantId);
+////                intent.putExtra("MerchantName", MerchantName);
+////                startActivity(intent);
+//                break;
+
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

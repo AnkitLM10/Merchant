@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:background="#000"
         android:gravity="center"
-        android:textSize="20sp"
         android:padding="10dp"
         android:text="Welcome To BookMyKainchi!"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,17 +32,25 @@
             android:textColor="#000"
             android:textSize="18dp" />
 
-
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/signInError"
+            android:layout_marginTop="30dp"
+            android:textColor="#FF0000"
+            android:textSize="14dp" />
+        
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="10"
 
             >
+
 
             <TextView
                 android:layout_width="0dp"
@@ -50,13 +58,13 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signInEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:id="@+id/signInEmail"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Email"
-                android:paddingLeft="70dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
                 android:textColorHint="#000" />
@@ -81,13 +89,14 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signInPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text_cutomisable"
-                android:id="@+id/signInPassword"
                 android:hint="Password"
-                android:paddingLeft="70dp"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
                 android:textColorHint="#000" />
@@ -113,9 +122,9 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/forgetPasswordTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/forgetPasswordTextView"
                 android:layout_weight="8"
                 android:gravity="right"
                 android:text="Forgot Password?"
@@ -140,6 +149,7 @@
                 android:layout_weight="3" />
 
             <TextView
+                android:id="@+id/signInButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -148,7 +158,6 @@
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
                 android:text="Signin"
-                android:id="@+id/signInButton"
                 android:textColor="#000"
                 android:textSize="17dp" />
 
@@ -182,14 +191,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/signInCreateNewAccount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text"
-                android:paddingLeft="70dp"
+                android:gravity="center"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
-                android:id="@+id/signInCreateNewAccount"
                 android:text="Create new Account"
                 android:textColor="#000"
                 android:textSize="17dp" />

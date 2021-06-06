@@ -165,7 +165,7 @@ public class bookingUpcomingFragment extends Fragment {
                 row.setTag(holder);
             } else
                 holder = (MyViewHolder) row.getTag();
-            String dateString = android.text.format.DateFormat.format("hh:mm aa dd MMMM", bookingList.get(i).date).toString();
+            String dateString = android.text.format.DateFormat.format("hh:mm aa dd MMM", bookingList.get(i).date).toString();
             holder.bookingDate.setText(dateString);
             //            holder.bookingDate.setText(bookingList.get(i).date.toString());
             holder.bookingAmount.setText(getResources().getString(R.string.rupee) + " " + bookingList.get(i).payableAmount);

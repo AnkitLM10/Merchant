@@ -29,7 +29,7 @@ import com.example.merchant.MerchantHome;
 import com.example.merchant.R;
 import com.example.merchant.pojo.ImageKitResponse;
 import com.example.merchant.pojo.Signature;
-import com.example.merchant.pojo.imageKitPost;
+import com.example.merchant.pojo.ImageKitPost;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -261,7 +261,7 @@ public class SignUpStep4 extends AppCompatActivity {
                     Log.d("header from Details", token);
                     headers.put("Content-Type", "application/x-www-form-urlencoded");
 
-                    imageKitPost imageKitPost = new imageKitPost(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
+                    ImageKitPost imageKitPost = new ImageKitPost(System.currentTimeMillis() + "", signature, getResources().getString(R.string.imagekitKey),
                             token, expiry, email,"data:image/jpeg;base64,"+encodedImage);
 
 //                    Call<ImageKitResponse> loginResponse = Api_ImageKit.getService().getUploadedImage(headers, );

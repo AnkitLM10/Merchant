@@ -1,12 +1,18 @@
 package com.example.merchant;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,12 +39,18 @@ import retrofit2.Response;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-public class ViewCategory extends AppCompatActivity {
+import com.example.merchant.menu.ContactUs;
+import com.example.merchant.menu.FeedbackActivity;
+import com.google.android.material.navigation.NavigationView;
+
+public class ViewCategory extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     String token = "";
     String MerchantId = "";
     List<String> listDataHeader;
     HashMap<String, List<Data>> listDataChild;
     ExpandableListAdapter listAdapter;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     ExpandableListView expListView;
     Set<Integer> servicesAlreadyOffered;
     HashMap<Integer, ServiceDataList> serviceOfferedToDataMappingHashMap;
@@ -46,15 +59,71 @@ public class ViewCategory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_category);
+        Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        // Setting  Menu Item Click Listener.....................
+        navigationView.setNavigationItemSelectedListener(this);
+        
         token = getIntent().getStringExtra("Token");
         MerchantId = getIntent().getStringExtra("MerchantId");
         Log.d("tagToken", token);
         servicesAlreadyOffered = new TreeSet<>();
+
+        setMenuDetails();
+        
         getAllServiceAlreadyOffered();
 
         //getCategory();  // Calling this from ServiceAlreadyOffered.................
         // get the listview
 
+
+    }
+
+    private void setMenuDetails() {
+
+        View menuView = navigationView.getHeaderView(0);
+        TextView email = (TextView) menuView.findViewById(R.id.menuEmail);
+        email.setText( MerchantHome.emailText);
+
+
+        TextView name = (TextView) menuView.findViewById(R.id.menuName);
+        name.setText(MerchantHome.mainName);
+
+        TextView number = (TextView) menuView.findViewById(R.id.menuNumber);
+        number.setText(MerchantHome.mainNumber);
+
+
+        TextView image = (TextView) menuView.findViewById(R.id.menuImageSize);
+        image.setText(MerchantHome.mainImage+" Images");
+
+
+
+        menuView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ViewCategory.this, "Menu Name Clicked Clicked!", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(ViewCategory.this, Profile.class);
+                intent.putExtra("Token", token);
+                Bundle args = new Bundle();
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                args.putSerializable("Message", (Serializable) MerchantHome.mainMessage);
+                args.putSerializable("Image", (Serializable)MerchantHome.imageArr);
+
+                intent.putExtra("BUNDLE", args);
+                startActivity(intent);
+                finish();
+
+            }
+        });
 
     }
 
@@ -157,6 +226,65 @@ public class ViewCategory extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.drawerViewPortfolio:
+                if (MerchantId == null) {
+                    Toast.makeText(ViewCategory.this, "Please Try again Later!!", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                Toast.makeText(ViewCategory.this, " View Portfolio Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(ViewCategory.this, ViewMerchantServices.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                startActivity(intent);
+
+                finish();
+
+                break;
+
+            case R.id.drawerEditUpdatePortfolio:
+
+                break;
+
+            case R.id.drawerCustomerFeedback:
+
+                Toast.makeText(ViewCategory.this, "Feedback Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(ViewCategory.this, FeedbackActivity.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                intent.putExtra("MerchantName", MerchantHome.mainName);
+                startActivity(intent);
+                finish();
+
+                break;
+//            case R.id.menuName:
+//
+//                Toast.makeText(ViewCategory.this, "Menu Name Clicked Clicked!", Toast.LENGTH_LONG).show();
+////                intent = new Intent(ViewCategory.this, FeedbackActivity.class);
+////                intent.putExtra("Token", token);
+////                intent.putExtra("MerchantId", MerchantId);
+////                intent.putExtra("MerchantName", MerchantName);
+////                startActivity(intent);
+//                break;
+            case R.id.drawerContactUs:
+                intent = new Intent(ViewCategory.this, ContactUs.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                intent.putExtra("MerchantName", MerchantHome.mainName);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                finish();
+                break;
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 //
 //    class CustomListView extends BaseAdapter {
 //        int size = 0;
@@ -212,4 +340,7 @@ public class ViewCategory extends AppCompatActivity {
 //            return row;
 //        }
 //    }
+
+
+
 }

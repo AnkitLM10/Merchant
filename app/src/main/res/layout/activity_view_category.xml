@@ -6,32 +6,104 @@
     android:layout_height="match_parent"
     tools:context=".ViewCategory">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linearLayoutEditUpdateCategory"
-        android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/categorySelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#000"
-            android:textColor="#FFF"
-            android:padding="10dp"
-            android:text=""/>
-
-    </LinearLayout>
-
-
-    <ExpandableListView
-        android:id="@+id/lvExp"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayoutEditUpdateCategory"
-        />
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:openDrawer="start">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:background="@color/primary_material_dark"
+                app:titleTextColor="#fff"
+
+                style="@style/myActionTheme"
+
+                app:popupTheme="@style/myActionTheme" />
+
+            <!--            <FrameLayout-->
+            <!--                android:id="@+id/merchantHomeNavbarContainer"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content" />-->
+
+            <Button
+                android:id="@+id/editUpdateService"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_below="@id/toolbar"
+                android:text="Edit / Update Service"
+                android:textColor="#FFF" />
+
+
+            <ExpandableListView
+                android:id="@+id/lvExp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editUpdateService" />
+
+            <Button
+                android:id="@+id/categorySelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#000"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="#FFF" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:id="@+id/linearLayoutEditUpdateCategory"-->
+    <!--        android:layout_alignParentBottom="true">-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/categorySelected"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center"-->
+    <!--            android:background="#000"-->
+    <!--            android:textColor="#FFF"-->
+    <!--            android:padding="10dp"-->
+    <!--            android:text=""/>-->
+
+    <!--    </LinearLayout>-->
+
+
+    <!--    <ExpandableListView-->
+    <!--        android:id="@+id/lvExp"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_above="@+id/linearLayoutEditUpdateCategory"-->
+    <!--        />-->
 
 
 </RelativeLayout>

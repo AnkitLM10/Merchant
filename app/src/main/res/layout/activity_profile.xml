@@ -7,248 +7,302 @@
     android:orientation="vertical"
     tools:context=".Profile">
 
-    <TextView
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlack"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="PROFILE"
-        android:textColor="#fff" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:openDrawer="start">
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="INSIGHTS:"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#606060"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:paddingTop="10dp"
-            android:id="@+id/profileBooking"
-            android:paddingBottom="10dp"
-            android:text="TOTAL BOOKING"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#606060"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="AVERAGE RATING"
-            android:id="@+id/profileAverageRating"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#606060"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="SERVICE OFFERED"
-            android:id="@+id/profileServiceOffered"
-            android:textColor="#fff" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="14"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Email:"
-            android:id="@+id/profileEmail"
-            android:textColor="#fff" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@mipmap/ic_edit_whitebackground" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="14"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Phone:"
-            android:id="@+id/profilePhone"
-            android:textColor="#fff" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@mipmap/ic_edit_whitebackground" />
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000"
-        android:orientation="horizontal"
-        android:weightSum="18">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="14"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Images:"
-            android:textColor="#fff" />
-
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:id="@+id/profileAddImage"
-            android:background="@mipmap/ic_add" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewLinearLayout"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:background="@color/primary_material_dark"
+                app:titleTextColor="#fff"
+
+                style="@style/myActionTheme"
+
+                app:popupTheme="@style/myActionTheme" />
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_below="@id/toolbar"
+         android:orientation="vertical">
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/colorBlack"
+             android:gravity="center"
+             android:padding="10dp"
+             android:text="PROFILE"
+             android:textColor="#fff" />
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#000"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="10"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="INSIGHTS:"
+                 android:textColor="#fff" />
+         </LinearLayout>
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#606060"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="3" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="10"
+                 android:paddingTop="10dp"
+                 android:id="@+id/profileBooking"
+                 android:paddingBottom="10dp"
+                 android:text="TOTAL BOOKING"
+                 android:textColor="#fff" />
+         </LinearLayout>
+
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#606060"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="3" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="10"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="AVERAGE RATING"
+                 android:id="@+id/profileAverageRating"
+                 android:textColor="#fff" />
+         </LinearLayout>
+
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#606060"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="3" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="10"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="SERVICE OFFERED"
+                 android:id="@+id/profileServiceOffered"
+                 android:textColor="#fff" />
+         </LinearLayout>
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#000"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="14"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="Email:"
+                 android:id="@+id/profileEmail"
+                 android:textColor="#fff" />
+
+             <ImageView
+                 android:layout_width="0dp"
+                 android:layout_height="20dp"
+                 android:layout_gravity="center"
+                 android:layout_weight="1"
+                 android:background="@mipmap/ic_edit_whitebackground" />
+         </LinearLayout>
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#000"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="14"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="Phone:"
+                 android:id="@+id/profilePhone"
+                 android:textColor="#fff" />
+
+             <ImageView
+                 android:layout_width="0dp"
+                 android:layout_height="20dp"
+                 android:layout_gravity="center"
+                 android:layout_weight="1"
+                 android:background="@mipmap/ic_edit_whitebackground" />
+         </LinearLayout>
+
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#000"
+             android:orientation="horizontal"
+             android:weightSum="18">
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2" />
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="14"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:text="Images:"
+                 android:textColor="#fff" />
+
+
+             <ImageView
+                 android:layout_width="0dp"
+                 android:layout_height="20dp"
+                 android:layout_gravity="center"
+                 android:layout_weight="1"
+                 android:id="@+id/profileAddImage"
+                 android:background="@mipmap/ic_add" />
+         </LinearLayout>
+
+         <View
+             android:layout_width="wrap_content"
+             android:layout_height="1dp" />
+
+         <ScrollView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/imageViewLinearLayout"
+                 android:orientation="vertical">
 
 
 
-        </LinearLayout>
-    </ScrollView>
+
+             </LinearLayout>
+         </ScrollView>
+
+
+     </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+
+
+
 
 
 </LinearLayout>

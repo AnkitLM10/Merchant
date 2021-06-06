@@ -9,6 +9,7 @@
 
 
     <TextView
+        android:id="@+id/signUpStep1Continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -16,7 +17,6 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Continue"
-        android:id="@+id/signUpStep1Continue"
         android:textColor="#fff"
         android:textSize="20sp" />
 
@@ -52,12 +52,12 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signUpStep1NameOfKainchi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Name of Kainchi"
-                android:id="@+id/signUpStep1NameOfKainchi"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
@@ -77,26 +77,22 @@
                 android:layout_weight="2" />
 
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                style="@style/spinnerItemStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@drawable/edit_text"
-                android:enabled="false"
-                android:gravity="center"
-                android:hint="+91"
-                android:inputType="none"
-                android:paddingTop="13dp"
-                android:paddingBottom="13dp"
-                android:textColorHint="#000" />
+                android:layout_weight="5"
+                android:spinnerMode="dropdown" />
+
 
             <EditText
+                android:id="@+id/signUpStep1Phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="13"
+                android:layout_weight="11"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Phone Number"
-                android:id="@+id/signUpStep1Phone"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
@@ -116,12 +112,12 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signUpStep1Email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Email"
-                android:id="@+id/signUpStep1Email"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
@@ -141,12 +137,12 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signUpStep1Password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Password"
-                android:id="@+id/signUpStep1Password"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
@@ -166,12 +162,12 @@
                 android:layout_weight="1" />
 
             <EditText
+                android:id="@+id/signUpStep1ConfirmPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/edit_text_cutomisable"
                 android:hint="Confirm Password"
-                android:id="@+id/signUpStep1ConfirmPassword"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"

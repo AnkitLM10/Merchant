@@ -8,60 +8,173 @@
 
     tools:context=".menu.FeedbackActivity">
 
-    <TextView
-        android:id="@+id/feedbackSalonTitle"
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#323232"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:text="REVIEW : SALON"
-        android:textColor="#FFF" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:openDrawer="start">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:background="@color/primary_material_dark"
+                app:titleTextColor="#fff"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+                style="@style/myActionTheme"
 
-        <TextView
-            android:id="@+id/feedbackAverageRating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#323232"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:text="Avergae Rating:"
-            android:textColor="#FFF" />
-
-        <TextView
-            android:id="@+id/feedbackNumberOfReviews"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#323232"
-            android:gravity="right"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:text="Number of Reviews"
-            android:textColor="#FFF" />
+                app:popupTheme="@style/myActionTheme" />
 
 
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
 
-    <ListView
-        android:id="@+id/feedbackListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/feedbackSalonTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#323232"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_below="@id/toolbar"
+                android:textSize="18sp"
+                android:text="REVIEW : SALON"
+                android:textColor="#FFF" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/feedbackSalonTitle"
+                android:id="@+id/view1"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/ll1"
+                android:layout_below="@id/view1"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/feedbackAverageRating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#323232"
+                    android:padding="10dp"
+                    android:textSize="18sp"
+                    android:text="Avergae Rating:"
+                    android:textColor="#FFF" />
+
+                <TextView
+                    android:id="@+id/feedbackNumberOfReviews"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#323232"
+                    android:gravity="right"
+                    android:padding="10dp"
+                    android:textSize="18sp"
+                    android:text="Number of Reviews"
+                    android:textColor="#FFF" />
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/ll1"
+                android:id="@+id/view2"
+                android:layout_height="1dp" />
+
+            <ListView
+                android:id="@+id/feedbackListView"
+                android:layout_below="@id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+
+
+
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/feedbackSalonTitle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#323232"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="10dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:text="REVIEW : SALON"-->
+<!--        android:textColor="#FFF" />-->
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp" />-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:weightSum="2">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/feedbackAverageRating"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#323232"-->
+<!--            android:padding="10dp"-->
+<!--            android:textSize="18sp"-->
+<!--            android:text="Avergae Rating:"-->
+<!--            android:textColor="#FFF" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/feedbackNumberOfReviews"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#323232"-->
+<!--            android:gravity="right"-->
+<!--            android:padding="10dp"-->
+<!--            android:textSize="18sp"-->
+<!--            android:text="Number of Reviews"-->
+<!--            android:textColor="#FFF" />-->
+
+
+<!--    </LinearLayout>-->
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp" />-->
+
+<!--    <ListView-->
+<!--        android:id="@+id/feedbackListView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
 
 
 </LinearLayout>

@@ -1,14 +1,22 @@
 package com.example.merchant.menu;
 
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.merchant.MerchantHome;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -16,17 +24,23 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.merchant.Api_call_merchant;
 import com.example.merchant.Api_endPoint;
 import com.example.merchant.MerchantHome;
+import com.example.merchant.Profile;
 import com.example.merchant.R;
 import com.example.merchant.ServiceOffered;
+import com.example.merchant.ViewCategory;
+import com.example.merchant.ViewMerchantServices;
 import com.example.merchant.bookingNewFragment;
 import com.example.merchant.pojo.Review;
 import com.example.merchant.pojo.retrieveAllFeedback;
+import com.google.android.material.navigation.NavigationView;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,11 +51,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private String MerchantId;
     private String MerchantName;
     private String token;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     ListView listView;
     TextView feedbackSalonTitle, feedbackAverageRating, feedbackNumberOfReviews;
 
@@ -53,15 +69,64 @@ public class FeedbackActivity extends AppCompatActivity {
         MerchantId = getIntent().getStringExtra("MerchantId");
         MerchantName = getIntent().getStringExtra("MerchantName");
         Log.d("tagToken", token);
+        Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        // Setting  Menu Item Click Listener.....................
+        navigationView.setNavigationItemSelectedListener(this);
         feedbackSalonTitle = (TextView) findViewById(R.id.feedbackSalonTitle);
         feedbackAverageRating = (TextView) findViewById(R.id.feedbackAverageRating);
         feedbackNumberOfReviews = (TextView) findViewById(R.id.feedbackNumberOfReviews);
-
+        setMenuDetails();
         getAllFeedback();
 
     }
+    private void setMenuDetails() {
 
+        View menuView = navigationView.getHeaderView(0);
+        TextView email = (TextView) menuView.findViewById(R.id.menuEmail);
+        email.setText( MerchantHome.emailText);
+
+
+        TextView name = (TextView) menuView.findViewById(R.id.menuName);
+        name.setText(MerchantHome.mainName);
+
+        TextView number = (TextView) menuView.findViewById(R.id.menuNumber);
+        number.setText(MerchantHome.mainNumber);
+
+
+        TextView image = (TextView) menuView.findViewById(R.id.menuImageSize);
+        image.setText(MerchantHome.mainImage+" Images");
+
+
+
+        menuView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FeedbackActivity.this, "Menu Name Clicked Clicked!", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(FeedbackActivity.this, Profile.class);
+                intent.putExtra("Token", token);
+                Bundle args = new Bundle();
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                args.putSerializable("Message", (Serializable) MerchantHome.mainMessage);
+                args.putSerializable("Image", (Serializable)MerchantHome.imageArr);
+
+                intent.putExtra("BUNDLE", args);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+    }
     private void getAllFeedback() {
 
         System.out.println("getting all the merchants!!");
@@ -102,6 +167,72 @@ public class FeedbackActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.drawerViewPortfolio:
+                if (MerchantId == null) {
+                    Toast.makeText(FeedbackActivity.this, "Please Try again Later!!", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                Toast.makeText(FeedbackActivity.this, " View Portfolio Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(FeedbackActivity.this, ViewMerchantServices.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                startActivity(intent);
+
+                finish();
+
+                break;
+
+            case R.id.drawerEditUpdatePortfolio:
+
+                Toast.makeText(FeedbackActivity.this, " Edit/Update Portfolio Clicked!", Toast.LENGTH_LONG).show();
+                intent = new Intent(FeedbackActivity.this, ViewCategory.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                startActivity(intent);
+                finish();
+                break;
+
+            case R.id.drawerCustomerFeedback:
+
+//                Toast.makeText(FeedbackActivity.this, "Feedback Clicked!", Toast.LENGTH_LONG).show();
+//                intent = new Intent(FeedbackActivity.this, FeedbackActivity.class);
+//                intent.putExtra("Token", token);
+//                intent.putExtra("MerchantId", MerchantId);
+//                intent.putExtra("MerchantName", MerchantName);
+//                startActivity(intent);
+                break;
+
+            case R.id.drawerContactUs:
+                intent = new Intent(FeedbackActivity.this, ContactUs.class);
+                intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantId);
+                intent.putExtra("MerchantName", MerchantHome.mainName);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                finish();
+                break;
+
+//            case R.id.menuName:
+//
+//                Toast.makeText(MerchantHome.this, "Menu Name Clicked Clicked!", Toast.LENGTH_LONG).show();
+////                intent = new Intent(MerchantHome.this, FeedbackActivity.class);
+////                intent.putExtra("Token", token);
+////                intent.putExtra("MerchantId", MerchantId);
+////                intent.putExtra("MerchantName", MerchantName);
+////                startActivity(intent);
+//                break;
+
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 

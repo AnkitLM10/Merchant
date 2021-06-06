@@ -26,8 +26,9 @@ import retrofit2.Response;
 public class SignUpStep2 extends AppCompatActivity {
 
     String token, email, phone, password, name;
-    TextView signUpStep2OtpText, signUpStep2Continue;
+    TextView signUpStep2OtpText, signUpStep2Continue, welcomeOnboardStep2;
     EditText signUpStep2Otp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,17 @@ public class SignUpStep2 extends AppCompatActivity {
         password = getIntent().getStringExtra("Password");
         Log.d("Info from Step 1", token + "\n" + email + "\n" + phone + "\n" + password);
 
+
+
         signUpStep2OtpText = (TextView) findViewById(R.id.signUpStep2OtpText);
+        welcomeOnboardStep2 = (TextView) findViewById(R.id.welcomeOnboardStep2);
         signUpStep2Continue = (TextView) findViewById(R.id.signUpStep2Continue);
         signUpStep2Otp = (EditText) findViewById(R.id.signUpStep2Otp);
         signUpStep2OtpText.setText("An OTP has been sent to your number " + phone + ", please enter the OTP to continue");
+
+        if (email.equals("")) {
+            welcomeOnboardStep2.setText("Forget Password!");
+        }
 
         onClickListenerForContinueButton();
     }

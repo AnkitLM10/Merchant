@@ -200,8 +200,10 @@ public class AddServiceDetail extends AppCompatActivity {
                 Log.d("tag", response.body().getResponseCode());
 
                 Intent intent;
-                intent = new Intent(AddServiceDetail.this, MerchantHome.class);
+                intent = new Intent(AddServiceDetail.this, ViewCategory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("Token", token);
+                intent.putExtra("MerchantId", MerchantHome.mainMerchantId);
                 startActivity(intent);
                 finish();
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/bookingMainLayout"
     android:background="#ccc"
     android:padding="2dp">
 
@@ -14,6 +15,7 @@
         android:fitsSystemWindows="false"
         app:itemTextColor="#fff"
         app:menu="@menu/merchant_booking_menu" />
+
 
     <FrameLayout
         android:id="@+id/merchantBookingNavbarContainer"

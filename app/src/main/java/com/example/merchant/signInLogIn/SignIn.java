@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class SignIn extends AppCompatActivity {
 
     EditText signInPassword, signInEmail;
-    TextView signInCreateNewAccount, signInButton, forgetPasswordTextView;
+    TextView signInCreateNewAccount, signInButton, forgetPasswordTextView, signInError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         signInPassword = (EditText) findViewById(R.id.signInPassword);
         signInEmail = (EditText) findViewById(R.id.signInEmail);
+        signInError = (TextView) findViewById(R.id.signInError);
         signInCreateNewAccount = (TextView) findViewById(R.id.signInCreateNewAccount);
         forgetPasswordTextView = (TextView) findViewById(R.id.forgetPasswordTextView);
         signInButton = (TextView) findViewById(R.id.signInButton);
@@ -92,9 +93,10 @@ public class SignIn extends AppCompatActivity {
                 final ProgressDialog dialog = new ProgressDialog(SignIn.this);
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.setTitle("Loading");
-                dialog.setMessage("Loading. Please wait...");
+                dialog.setMessage("Signing In!!!");
                 dialog.setIndeterminate(true);
                 dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
 
                 LoginUser loginUser = new LoginUser(emailText, password, "abcd");
                 Call<LoginResponse> loginResponse = Api_call.getService().getLoginResponse(loginUser);
@@ -104,7 +106,15 @@ public class SignIn extends AppCompatActivity {
 
                         if (!response.isSuccessful()) {
                             Log.d("tag", response.toString());
-                            Toast.makeText(SignIn.this, "Problem while Signing In", Toast.LENGTH_LONG).show();
+                            Log.d("tag", response.message());
+                            Log.d("tag", response.code() + "");
+                            Log.d("tag", response.errorBody().toString());
+
+                            if (response.code() == 400) {
+                                signInError.setText("Invalid Username or Password!");
+                            }
+
+                          //  Toast.makeText(SignIn.this, "Problem while Signing In", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                             return;
                         }
@@ -117,13 +127,17 @@ public class SignIn extends AppCompatActivity {
                         dialog.dismiss();
                         intent.putExtra("Email", emailText);
                         startActivity(intent);
+                        finish();
 
 
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Toast.makeText(SignIn.this, "failure", Toast.LENGTH_SHORT).show();
+                     //  Toast.makeText(SignIn.this, "failure", Toast.LENGTH_SHORT).show();
+                        Log.d("Errorr", call.toString());
+                        Log.d("Errorr", t.getMessage());
+                        Log.d("Errorr", t.getLocalizedMessage());
                         dialog.dismiss();
 
                     }

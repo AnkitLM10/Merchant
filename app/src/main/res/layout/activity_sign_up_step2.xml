@@ -28,6 +28,7 @@
         android:background="#000"
         android:gravity="center"
         android:padding="10dp"
+
         android:text="Welcome Onboard!"
         android:textColor="#fff"
         android:textSize="20sp" />

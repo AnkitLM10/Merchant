@@ -1,6 +1,6 @@
 package com.example.merchant.pojo;
 
-public class imageKitPost {
+public class ImageKitPost {
     /*
     --header 'Content-Type: application/x-www-form-urlencoded' \
 --form 'file="data:image/jpeg;base64,encodedimagehere"' \
@@ -18,7 +18,7 @@ public class imageKitPost {
     String tags, signature, publicKey, token, folder;
     long expire;
 
-    public imageKitPost(String fileName, String signature, String publicKey, String token, long expire, String folder, String file) {
+    public ImageKitPost(String fileName, String signature, String publicKey, String token, long expire, String folder, String file) {
         this.fileName = fileName;
         this.signature = signature;
         this.publicKey = publicKey;
